@@ -1,28 +1,52 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+    <TodoList
+      :todos="todos" />
+    <CreateTodo
+      @create-todo="createTodo" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import HelloWorld from './components/HelloWorld.vue'
+import TodoList from './components/TodoList.vue'
+import CreateTodo from './components/CreateTodo.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    TodoList,
+    CreateTodo
+  },
+  data () {
+    return {
+      todos: [
+        {
+          title: 'Todo A',
+          deadline: 'deadline A',
+          done: false
+        }, {
+          title: 'Todo B',
+          deadline: 'deadline B',
+          done: true
+        }, {
+          title: 'Todo C',
+          deadline: 'deadline C',
+          done: false
+        }, {
+          title: 'Todo D',
+          deadline: 'deadline D',
+          done: false
+        }
+      ]
+    }
+  },
+  methods: {
+    createTodo (newTodo) {
+      console.log(newTodo)
+      this.todos.push(newTodo)
+    }
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
