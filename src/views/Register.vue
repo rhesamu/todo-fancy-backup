@@ -6,15 +6,15 @@
           Register
         </div>
       </h2>
-      <form class="ui large form">
+      <form @submit.prevent="register" class="ui large form">
         <div class="ui stacked secondary segment">
           <div class="field">
             <label>Email</label>
-            <input type="text" name="first-name" placeholder="First Name">
+            <input type="text" name="email" placeholder="Email" v-model="email">
           </div>
           <div class="field">
             <label>Password</label>
-            <input type="text" name="last-name" placeholder="Last Name">
+            <input type="password" name="password" placeholder="Password" v-model="password">
           </div>
           
           <button class="ui button teal" type="submit">Register</button>
@@ -24,6 +24,34 @@
     </div>
   </div>
 </template>
+
+<script>
+import axios from 'axios'
+
+export default {
+  data () {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  methods: {
+    register () {
+      axios.post('http://todo-api.rhesautomo.com/api/register', {
+        email: this.email,
+        password: this.password
+      })
+      .then(response => {
+        console.log('success',response)
+        this.$router.push('/login')
+      })
+      .catch(err => {
+        console.log('error', err)
+      })
+    }
+  }
+}
+</script>
 
 
 <style scoped>

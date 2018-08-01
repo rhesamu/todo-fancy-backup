@@ -6,15 +6,15 @@
           Todo Fancy
         </div>
       </h2>
-      <form class="ui large form">
+      <form @submit.prevent="login" class="ui large form">
         <div class="ui stacked secondary segment">
           <div class="field">
             <label>Email</label>
-            <input type="text" name="first-name" placeholder="First Name">
+            <input type="text" name="email" placeholder="Email address" v-model="email">
           </div>
           <div class="field">
             <label>Password</label>
-            <input type="text" name="last-name" placeholder="Last Name">
+            <input type="password" name="password" placeholder="Password" v-model="password">
           </div>
           <button class="ui button teal" type="submit">Login</button>
         </div>
@@ -25,6 +25,38 @@
     </div>
   </div>
 </template>
+
+<script>
+import axios from 'axios'
+
+export default {
+  data () {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  methods: {
+    login () {
+      let self = this
+      axios.post('http://todo-api.rhesautomo.com/api/login', {
+        email: this.email,
+        password: this.password
+      })
+      .then(response => {
+        if (response.data.token) {
+          console.log('success -->', response)
+          localStorage.setItem('token', response.data.token)
+          this.$router.push('/')
+        }
+      })
+      .catch(err => {
+        console.log('err -->',err)
+      })
+    }
+  }
+}
+</script>
 
 
 <style scoped>

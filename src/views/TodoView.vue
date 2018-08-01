@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import TodoList from '@/components/TodoList.vue'
 import CreateTodo from '@/components/CreateTodo.vue'
 
@@ -20,29 +21,39 @@ export default {
   },
   data () {
     return {
-      todos: [
-        {
-          title: 'Todo A',
-          deadline: 'deadline A',
-          done: false
-        }, {
-          title: 'Todo B',
-          deadline: 'deadline B',
-          done: true
-        }, {
-          title: 'Todo C',
-          deadline: 'deadline C',
-          done: false
-        }, {
-          title: 'Todo D',
-          deadline: 'deadline D',
-          done: false
-        }
-      ]
+      todos: []
     }
+  },
+  mounted () {
+    let token = localStorage.getItem('token')
+    console.log(token)
+    if (!token) {
+      this.$router.push('/login')
+    }
+
+    axios.get('http://todo-api.rhesautomo.com/api/todos', {
+      headers: { token }
+    })
+    .then(response => {
+      console.log(response)
+      this.todos = response.data.todos
+    })
+    .catch(err => {
+      console.log('error', err)
+    })
   },
   methods: {
     createTodo (newTodo) {
+      let token = localStorage.getItem('token')
+      axios.post('http://todo-api.rhesautomo.com/api/todos', newTodo, {
+        headers: { token }
+      })
+      .then(response => {
+        console.log('success', response)
+      })
+      .catch(err => {
+        console.log('error', err)
+      })
       console.log(newTodo)
       this.todos.push(newTodo)
     }

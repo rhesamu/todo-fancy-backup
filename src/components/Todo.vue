@@ -28,7 +28,7 @@
           <input type="date" name="deadline" v-model="todo.deadline">
         </div>
         <div class="ui two button attached buttons">
-          <button class="ui basic blue button" v-on:click="hideForm">
+          <button class="ui basic blue button" v-on:click="hideForm(todo)">
             Edit
           </button>
         </div>
@@ -66,7 +66,8 @@ export default {
     showForm () {
       this.isEditing = true
     },
-    hideForm () {
+    hideForm (todo) {
+      this.$emit('edit-todo', todo)
       this.isEditing = false
     }
   }

@@ -1,10 +1,8 @@
 <template>
   <div id="app">
-    <Navbar v-show="isLoggedIn"/>
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div> -->
+    <Navbar 
+      v-show="isLoggedIn"
+      @logout="logout"/>
     <router-view/>
   </div>
 </template>
@@ -20,6 +18,21 @@ export default {
   },
   components: {
     Navbar
+  },
+  created () {
+    let token = localStorage.getItem('token')
+    if (token) {
+      this.isLoggedIn = true
+    } else {
+      this.$router.push('/login')
+    }
+  },
+  methods: {
+    logout() {
+      this.isLoggedIn = false
+      localStorage.removeItem('token')
+      this.$router.push('/login')
+    }
   }
 }
 </script>
